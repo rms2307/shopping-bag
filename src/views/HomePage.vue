@@ -21,7 +21,7 @@
           class="remove"
           @click="this.$store.dispatch('removeFromBag', product.id)"
         >
-          Remove from bag
+          Remover do carrinho
         </button>
       </div>
     </div>
@@ -29,19 +29,14 @@
 </template>
 
 <script>
+import { mapState } from "vuex"
+
 export default {
   name: "HomePage",
   data() {
     return {}
   },
-  computed: {
-    products() {
-      return this.$store.state.products
-    },
-    productsInBag() {
-      return this.$store.state.productsInBag
-    },
-  },
+  computed: mapState(["products", "productsInBag"]),
   methods: {
     addToBag(product) {
       product.quantity = 1
