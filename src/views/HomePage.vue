@@ -1,38 +1,17 @@
 <template>
   <div class="home">
     <div class="products">
-      <div class="product">
+      <div v-for="(product, idx) in this.products" :key="idx" class="product">
         <div
           class="product-image"
-          style="
-            background-image: url('https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg');
-          "
+          :style="{ backgroundImage: 'url(' + product.image + ')' }"
         ></div>
-        <h4>Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops</h4>
-        <p class="price">R$ 109.95</p>
-        <button>Adicionar ao carrinho</button>
-      </div>
-      <div class="product">
-        <div
-          class="product-image"
-          style="
-            background-image: url('https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg');
-          "
-        ></div>
-        <h4>Mens Casual Premium Slim Fit T-Shirts</h4>
-        <p class="price">R$ 22.30</p>
-        <button>Adicionar ao carrinho</button>
-      </div>
-      <div class="product">
-        <div
-          class="product-image"
-          style="
-            background-image: url('https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg');
-          "
-        ></div>
-        <h4>Mens Cotton Jacket</h4>
-        <p class="price">R$ 55.99</p>
-        <button>Adicionar ao carrinho</button>
+        <h4>{{ product.title }}</h4>
+        <p class="price">R$ {{ product.price.toFixed(2) }}</p>
+        <button v-if="!isInBag(product)" @click="addToBag(product)">
+          Adicionar ao carrinho
+        </button>
+        <button v-else class="remove">Remove from bag</button>
       </div>
     </div>
   </div>
@@ -47,6 +26,18 @@ export default {
   computed: {
     products() {
       return this.$store.state.products
+    },
+    productsInBag() {
+      return this.$store.state.productsInBag
+    },
+  },
+  methods: {
+    addToBag(product) {
+      product.quantity = 1
+      this.$store.dispatch("addToBag", product)
+    },
+    isInBag(product) {
+      return this.productsInBag.find((item) => item.id == product.id)
     },
   },
 }
