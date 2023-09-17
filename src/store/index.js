@@ -10,9 +10,13 @@ export default createStore({
     loadProducts(state, products) {
       state.products = products
     },
-    addToBag(state, product){
+    addToBag(state, product) {
       state.productsInBag.push(product)
-    }
+    },
+    removeFromBag(state, productId) {
+      var updateBag = state.productsInBag.filter((p) => p.id != productId)
+      state.productsInBag = updateBag
+    },
   },
   actions: {
     loadProducts({ commit }) {
@@ -22,6 +26,9 @@ export default createStore({
     },
     addToBag({ commit }, product) {
       commit("addToBag", product)
+    },
+    removeFromBag({ commit }, productId) {
+      commit("removeFromBag", productId)
     },
   },
   modules: {},
